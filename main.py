@@ -6,14 +6,20 @@ import json
 from Lazada_Server import Access_token
 from Lazada_Server import Refresh_token
 from Lazada_Server import FInance
+from pydantic import BaseModel
 
 
 # App
 app = FastAPI()
 
+class Token(BaseModel):
+    appKey: str
+    appSecret: str 
+    code: str
 
-@app.post('/CreateToken/{appKey}/{appSecret}/{code}')
-async def getToken(appKey: str, appSecret: str, code: str):
+
+@app.post('/CreateToken')
+async def getToken(token : Token):
     """This Method is to Create Token from the Auth code and save 
         to the data base.
 
@@ -24,6 +30,9 @@ async def getToken(appKey: str, appSecret: str, code: str):
         Returns:
         schema: which contains token of a seller.
    """
+    appKey = token.appKey
+    appSecret = token.appSecret
+    code = token.code
     response = Access_token.Createtoken(
         appKey, appSecret, code)  # Response from lazada server
     if response.code == '0':  # checking response is OK (200)
