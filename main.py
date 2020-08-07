@@ -30,6 +30,8 @@ async def getToken(token : Token):
         Returns:
         schema: which contains token of a seller.
    """
+    print(token)
+    print('------------------>')
     appKey = token.appKey
     appSecret = token.appSecret
     code = token.code
