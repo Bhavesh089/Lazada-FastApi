@@ -1,7 +1,7 @@
 
 # Server
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Form,Depends,Request
 import json
 from Lazada_Server import Access_token
 from Lazada_Server import Refresh_token
@@ -12,14 +12,17 @@ from pydantic import BaseModel
 # App
 app = FastAPI()
 
-class Token(BaseModel):
-    appKey: str
-    appSecret: str 
-    code: str
-
+class LoginForm:
+    def __init__(self, grant_type:str = Form(...), redirect_uri:str = Form(...), client_id: str = Form(...), client_secret: str = Form(...), code : str = Form(...)):
+        self.grant_type = grant_type
+        self.redirect_url = redirect_uri
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.code = code
 
 @app.post('/CreateToken')
-async def getToken(token : Token):
+async def getToken(login : LoginForm = Depends()):
+
     """This Method is to Create Token from the Auth code and save 
         to the data base.
 
@@ -30,11 +33,19 @@ async def getToken(token : Token):
         Returns:
         schema: which contains token of a seller.
    """
-    print(token)
-    print('------------------>')
-    appKey = token.appKey
-    appSecret = token.appSecret
-    code = token.code
+
+#grant_type=authorization_code
+# redirect_uri=http%3A%2F%2Flazada-seller-auth.herokuapp.com%2Fauth%2Flazada%2Fredirect
+# client_id=121585
+# client_secret=spUZHteZ4tlglG48rZlawPS75OtxXuYf
+# code=0_121585_WZ8ZzvD6Zw5PbgMnP36vOf3L63534
+
+    return  login
+
+    appKey = client_id
+    print(appKey)
+    appSecret = client_secret
+    
     response = Access_token.Createtoken(
         appKey, appSecret, code)  # Response from lazada server
     if response.code == '0':  # checking response is OK (200)
@@ -42,6 +53,13 @@ async def getToken(token : Token):
         return token
     else:  # If Response has some error message raise Exception
         raise HTTPException(status_code=400, detail=response.message)
+
+@app.post("/login/")
+async def login(username: str = Form(...), password: str = Form(...)):
+    if req.headers['Content-Type'] == 'application/x-www-form-urlencoded':
+        return {"username": username}
+    
+
 
 
 @app.post('/RenewToken/{refreshToken}')
