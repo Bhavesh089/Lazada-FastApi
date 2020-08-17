@@ -12,7 +12,7 @@ def Createtoken(code):
     # print(appKey)
     # print(appSecret)
     # print(code)
-    client = lazop.LazopClient(Lazada_setup['apiService'],
+    client = lazop.LazopClient(Lazada_setup['authService'],
                                Lazada_setup['appKey'], Lazada_setup['appSecret'])
     # create a api request set GET mehotd
     # default http method is POST
