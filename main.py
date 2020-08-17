@@ -20,8 +20,8 @@ class LoginForm:
         self.client_secret = client_secret
         self.code = code
 
-@app.post('/CreateToken')
-async def getToken(login : LoginForm = Depends()):
+@app.get('/CreateToken')
+async def getToken(code : str):
 
     """This Method is to Create Token from the Auth code and save 
         to the data base.
@@ -40,30 +40,26 @@ async def getToken(login : LoginForm = Depends()):
 # client_secret=spUZHteZ4tlglG48rZlawPS75OtxXuYf
 # code=0_121585_WZ8ZzvD6Zw5PbgMnP36vOf3L63534
 
-    return  login
+    # return  login
 
-    appKey = client_id
-    print(appKey)
-    appSecret = client_secret
-    
-    response = Access_token.Createtoken(
-        appKey, appSecret, code)  # Response from lazada server
+    # appKey = client_id
+    # print(appKey)
+    # appSecret = client_secret
+    print(code)
+    response = Access_token.Createtoken(code)  # Response from lazada server
     if response.code == '0':  # checking response is OK (200)
         token = response.body
         return token
     else:  # If Response has some error message raise Exception
         raise HTTPException(status_code=400, detail=response.message)
 
-@app.post("/login/")
-async def login(username: str = Form(...), password: str = Form(...)):
-    if req.headers['Content-Type'] == 'application/x-www-form-urlencoded':
-        return {"username": username}
+
     
 
 
 
-@app.post('/RenewToken/{refreshToken}')
-async def getRenew_token(refreshToken: str):
+@app.get('/RenewToken')
+async def getRenew_token(refreshtoken: str):
     """This Method is to Regenerate the New token from LazadaServer
         and update it to DB.
 
@@ -76,7 +72,7 @@ async def getRenew_token(refreshToken: str):
         schema: refresh token schema and update it in DB
    """
     response = Refresh_token.renewToken(
-        refreshToken)  # Response from Lazada server
+        refreshtoken)  # Response from Lazada server
 
     # checking response if OK (200)
     if response.code == '0':

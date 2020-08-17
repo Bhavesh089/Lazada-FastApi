@@ -5,15 +5,15 @@ from datetime import timedelta, date, datetime
 from config import Lazada_setup
 
 
-def Createtoken(appKey, appSecret, code):
+def Createtoken(code):
     # params 1 : gateway url
     # params 2 : appkey
     # params 3 : appSecret
-    print(appKey)
-    print(appSecret)
-    print(code)
-    client = lazop.LazopClient(Lazada_setup['authService'],
-                               appKey, appSecret)
+    # print(appKey)
+    # print(appSecret)
+    # print(code)
+    client = lazop.LazopClient(Lazada_setup['apiService'],
+                               Lazada_setup['appKey'], Lazada_setup['appSecret'])
     # create a api request set GET mehotd
     # default http method is POST
     request = lazop.LazopRequest('/auth/token/create')
@@ -42,4 +42,4 @@ def Createtoken(appKey, appSecret, code):
 
 
 if __name__ == "__main__":
-    Createtoken(appKey, appSecret, code)
+    Createtoken(code)

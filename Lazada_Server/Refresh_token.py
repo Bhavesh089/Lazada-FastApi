@@ -4,12 +4,11 @@ from datetime import timedelta, date, datetime
 import time
 from config import Lazada_setup
 
-
 def renewToken(refreshToken):
     # params 1 : gateway url
     # params 2 : appkey
     # params 3 : appSecret
-
+    print(refreshToken)
     client = lazop.LazopClient(Lazada_setup['authService'],
                                Lazada_setup['appKey'], Lazada_setup['appSecret'])
     # create a api request set GET mehotd

@@ -170,6 +170,7 @@ class LazopClient(object):
 
         response = LazopResponse()
 
+        
         jsonobj = r.json()
 
         if P_CODE in jsonobj:
