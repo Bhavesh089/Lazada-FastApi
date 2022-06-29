@@ -23,16 +23,6 @@ def renewToken(refreshToken):
     # ISP : API Service Provider Error
     # ISV : API Request Client Error
     # SYSTEM : Lazop platform Error
-    print(response.type)
-
-    # response code, 0 is no error
-    print(response.code)
-
-    # response error message
-    print(response.message)
-
-    # response unique id
-    print(response.request_id)
 
     # full response
     print(response.body)
